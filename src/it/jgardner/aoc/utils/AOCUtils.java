@@ -12,6 +12,12 @@ public class AOCUtils {
 
     public static List<String> getInputData(int year, int day) {
         try {
+            File inputDataFile = new File(year + "-" + day + ".txt");
+            if (inputDataFile.exists()) {
+                return new BufferedReader(new FileReader(inputDataFile))
+                        .lines()
+                        .collect(Collectors.toList());
+            }
             String cookieData =
                     new BufferedReader(
                                     new InputStreamReader(
@@ -25,9 +31,16 @@ public class AOCUtils {
                     new URL("https://adventofcode.com/" + year + "/day/" + day + "/input")
                             .openConnection();
             urlConnection.setRequestProperty("Cookie", "session=" + cookieData);
-            return new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))
-                    .lines()
-                    .collect(Collectors.toList());
+            List<String> inputData =
+                    new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))
+                            .lines()
+                            .collect(Collectors.toList());
+            inputDataFile.createNewFile();
+            FileWriter inputDataFileWriter = new FileWriter(inputDataFile);
+            inputDataFileWriter.write(String.join("\n", inputData));
+            inputDataFileWriter.close();
+
+            return inputData;
         } catch (IOException e) {
             e.printStackTrace();
         }
