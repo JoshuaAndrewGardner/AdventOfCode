@@ -25,6 +25,7 @@ replay_pid*
 
 # session cookie key
 **/cookieData.ini
+20*-*.txt
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/intellij
